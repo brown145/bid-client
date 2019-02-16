@@ -1,16 +1,33 @@
 {
   "name": "bid-client",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-scripts": "2.1.3"
+    "@feathersjs/authentication-client": "^1.0.11",
+    "@feathersjs/feathers": "^3.3.1",
+    "@feathersjs/socketio-client": "^1.2.1",
+    "antd": "^3.13.1",
+    "feathers-authentication-client": "^0.3.3",
+    "js-cookie": "^2.2.0",
+    "lodash.first": "^3.0.0",
+    "lodash.flow": "^3.5.0",
+    "lodash.groupby": "^4.6.0",
+    "lodash.last": "^3.0.0",
+    "lodash.map": "^4.6.0",
+    "lodash.meanby": "^4.10.0",
+    "lodash.reduce": "^4.6.0",
+    "lodash.reverse": "^4.0.1",
+    "lodash.sortby": "^4.7.0",
+    "lodash.topairs": "^4.3.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-scripts": "2.1.3",
+    "socket.io-client": "^2.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -21,5 +38,12 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "babel-plugin-import": "^1.11.0",
+    "customize-cra": "^0.2.11",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "react-app-rewired": "^2.0.3"
+  }
 }

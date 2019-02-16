@@ -1,0 +1,18 @@
+.head,
+.head>div {
+  height: 64px;
+}
+
+.head svg {
+  height: 55px;
+  margin: 4px 0;
+  padding: 4px;
+}
+
+.head h1 {
+  height: 64px;
+  margin: 0;
+  font-weight: 200;
+  letter-spacing: 1.25px;
+  margin-left: 4px;
+}

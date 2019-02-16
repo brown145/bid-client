@@ -1,0 +1,11 @@
+.ant-list.userList {
+  padding: 0 8px;
+}
+
+.userList.ant-list-split .ant-list-item {
+  border-bottom: none;
+}
+
+.userList .ant-avatar {
+  margin-right: 4px;
+}

@@ -1,0 +1,37 @@
+.issueList .ant-list-item {
+  padding: 8px;
+}
+
+.issueList .issueName {
+  padding-right: 12px;
+  min-width: 12em;
+  display: inline-block;
+}
+
+.listEnd.ant-divider-horizontal {
+  margin: 2px 0;
+}
+
+
+.InactiveIssue .ant-statistic {
+  padding-left: 2em;
+}
+
+.InactiveIssue .ant-statistic-title {
+  font-size: 10px;
+}
+
+.InactiveIssue .ant-statistic-content {
+  font-size: 14px;
+}
+
+.InactiveIssue .ant-statistic-content-value-decimal {
+  font-size: 12px;
+}
+
+.InactiveIssue .ant-tag {
+  background-color: #f5f5f5;
+}
+.InactiveIssue .ant-tag.modeTag {
+  background-color: #eaff8f;
+}
