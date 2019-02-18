@@ -10,9 +10,12 @@ import './App.css';
 
 const { Header, Sider, Footer, Content } = Layout;
 
+// TODO: collapsed state if mobile
+// TODO: prevent collablesed state if no data or change no data text
 class App extends Component {
   state = {
-    authenticated: false
+    authenticated: false,
+    collapseSide: false
   };
 
   componentDidMount() {
@@ -36,9 +39,17 @@ class App extends Component {
           <Head authenticated={this.state.authenticated} onAuthenticate={this.handleAuthenticate} />
         </Header>
         <Layout>
-          <Sider theme={'light'}>
+          <Sider
+            theme={'light'}
+            collapsible
+            collapsed={this.state.collapseSide}
+            onCollapse={() => this.setState({ collapseSide: !this.state.collapseSide })}
+            width={160}
+            collapsedWidth={40}
+          >
             <UserList
               authenticated={this.state.authenticated}
+              displayNames={!this.state.collapseSide}
             />
           </Sider>
           <Content>

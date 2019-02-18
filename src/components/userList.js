@@ -22,6 +22,9 @@ function UserList(props) {
     [props.authenticated]
   );
 
+  const renderDisplayName = (item) => (props.displayNames) ?
+    item.displayName : '';
+
   return (
     <List
       className='userList'
@@ -35,7 +38,7 @@ function UserList(props) {
               <Avatar size={'small'}>
                 {item.displayName.split(' ').reduce((a, b) => `${a}${b.charAt(0)}`, '')}
               </Avatar>
-              {item.displayName}
+              {renderDisplayName(item)}
             </Col>
           </Row>
         </List.Item>
