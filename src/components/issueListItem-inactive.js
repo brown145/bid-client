@@ -4,7 +4,6 @@ import { flow, groupBy, last, map, meanBy, reverse, sortBy } from 'lodash';
 import { bids as bidService } from '../network/feathersSocket';
 
 function reducerBids(bids, action) {
-  console.log(action);
   switch (action.type) {
     case 'set':
       return action.payload;

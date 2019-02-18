@@ -10,7 +10,6 @@ import PendingItem from '../components/issueListItem-pending';
 import IssueAdder from '../components/issueAdder';
 
 function reducerIssues(issues, action) {
-  console.log(action);
   switch (action.type) {
     case 'set':
       return action.payload;
