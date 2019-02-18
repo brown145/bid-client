@@ -6,6 +6,7 @@ import Head from './components/head';
 import UserList from './components/userList';
 import IssueList from './components/issueList';
 import Foot from './components/foot';
+import bidServer from './utility/bidServer';
 import './App.css';
 
 const { Header, Sider, Footer, Content } = Layout;
@@ -28,7 +29,7 @@ class App extends Component {
     login()
       .then(() => this.setState({ authenticated: true }))
       .catch(() => {
-        window.location.href = 'http://localhost:3030/auth/google';
+        window.location.href = `${bidServer.uri}/auth/google`;
       });
   }
 

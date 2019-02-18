@@ -1,11 +1,10 @@
-// import Cookie from 'js-cookie';
-
 const feathers = require('@feathersjs/feathers');
 const socketio = require('@feathersjs/socketio-client');
 const io = require('socket.io-client');
 const auth = require('@feathersjs/authentication-client');
+const bidServer = require('../utility/bidServer');
 
-const socket = io('http://localhost:3030');
+const socket = io(bidServer.uri);
 const client = feathers();
 
 // Set up Socket.io client with the socket
