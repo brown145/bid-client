@@ -1,17 +1,17 @@
 # TODO
 
-#. aws
-#. channels
-#. logout
+1. aws
+1. channels
+1. logout
 
 
 # Build and Deploy
 ## Docker Dev
- #. npm run build
- #. docker build -t bid-client-dev .
- #. docker run -p 5000:4444 -d bid-client-dev
+ 1. npm run build
+ 1. docker build -t bid-client-dev .
+ 1. docker run -p 5000:4444 -d bid-client-dev
 
 ## Docker Prod
- #. npm run build
- #. docker build -t bid-client-prod -f Dockerfile.production .
- #. docker run -p 5050:4000 -d bid-client-prod
+ 1. npm run build
+ 1. docker build -t bid-client-prod -f Dockerfile.production .
+ 1. docker run -p 5050:4000 -d bid-client-prod
