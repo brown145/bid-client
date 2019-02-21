@@ -9,3 +9,12 @@
 .userList .ant-avatar {
   margin-right: 4px;
 }
+
+.currentUser {
+  font-weight: 500;
+  font-style: italic;
+}
+
+.currentUser .ant-avatar {
+  background: #a0d911;
+}

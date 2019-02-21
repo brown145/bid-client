@@ -17,7 +17,7 @@ module.exports = override(
      '@layout-sider-background-light': '#f5f5f5',
      '@layout-footer-background': '#f5f5f5',
      '@layout-body-background': '#fff',
-     '@layout-footer-padding': '4px'
+     '@layout-footer-padding': '16px'
    },
  }),
 );

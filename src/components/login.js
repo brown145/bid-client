@@ -6,7 +6,7 @@ function Login(props) {
     <Button
       type="primary"
       ghost={props.authenticated}
-      onClick={props.onAuthenticate}
+      onClick={() => (props.authenticated) ? props.onDeauthenticate() : props.onAuthenticate()}
     >
       {(props.authenticated) ? 'Logout' : 'Login' }
     </Button>

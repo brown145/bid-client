@@ -2,7 +2,6 @@
 
 1. aws
 1. channels
-1. logout
 
 
 # Build and Deploy

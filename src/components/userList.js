@@ -17,6 +17,8 @@ function UserList(props) {
             setIsLoading(false);
             setUsers(users.data);
           });
+      } else {
+        setUsers([]);
       }
     },
     [props.authenticated]
@@ -33,9 +35,15 @@ function UserList(props) {
       loading={isLoading}
       renderItem={item => (
         <List.Item>
-          <Row type="flex" align="middle" justify="space-between" style={{width: '100%'}}>
+          <Row
+            className={(item._id === props.currentUser._id) ? 'currentUser' : ''}
+            type="flex"
+            align="middle"
+            justify="space-between"
+            style={{width: '100%'}}
+          >
             <Col>
-              <Avatar size={'small'}>
+              <Avatar size={'small'} shape="square">
                 {item.displayName.split(' ').reduce((a, b) => `${a}${b.charAt(0)}`, '')}
               </Avatar>
               {renderDisplayName(item)}

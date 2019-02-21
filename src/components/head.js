@@ -19,7 +19,11 @@ function Head(props) {
         </Row>
       </Col>
       <Col>
-        <Login authenticated={props.authenticated} onAuthenticate={props.onAuthenticate} />
+        <Login
+          authenticated={props.authenticated}
+          onAuthenticate={props.onAuthenticate}
+          onDeauthenticate={props.onDeauthenticate}
+        />
       </Col>
     </Row>
   );

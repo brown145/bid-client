@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useReducer, useEffect } from 'react';
-import { Divider, List } from 'antd';
+import { Divider, message, List } from 'antd';
 import './issueList.css';
 
 import { issues as issueService } from '../network/feathersSocket';
@@ -43,13 +43,24 @@ function IssueList(props) {
           setIsLoading(false);
           issuesDispatch({ type: 'set', payload: issues.data })
         });
+    } else {
+      issuesDispatch({ type: 'set', payload: [] });
     }
   }, [props.authenticated]);
 
   useEffect(() => {
-    issueService.on.create(issue => issuesDispatch({ type: 'add', payload: issue }));
-    issueService.on.update((issue) => issuesDispatch({ type: 'update', payload: issue }));
-    issueService.on.remove((issue) => issuesDispatch({ type: 'remove', payload: issue._id }));
+    issueService.on.create(issue => {
+      message.info(`Added issue: "${issue.name.slice(0, 24)}"`);
+      issuesDispatch({ type: 'add', payload: issue });
+    });
+    issueService.on.update((issue) => {
+      message.info(`Issue "${issue.name.slice(0, 24)}" is ${issue.status}`);
+      issuesDispatch({ type: 'update', payload: issue });
+    });
+    issueService.on.remove((issue) => {
+      message.warning(`Removed issue: "${issue.name.slice(0, 24)}"`);
+      issuesDispatch({ type: 'remove', payload: issue._id });
+    });
     return () => console.log('TODO - did we unmount?');
   }, []);
 

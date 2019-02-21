@@ -12,6 +12,7 @@ client.configure(socketio(socket));
 client.configure(auth());
 
 export const login = client.authenticate;
+export const logout = client.logout;
 
 const userService = client.service('users');
 const issueService = client.service('issues');
@@ -49,5 +50,6 @@ export default {
   bids,
   issues,
   login,
+  logout,
   users
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, List, Row } from 'antd';
+import { Button, Col, List, Popconfirm, Row } from 'antd';
 
 function PendingItem(props) {
   const handleRemove = (event) => {
@@ -11,14 +11,16 @@ function PendingItem(props) {
   }
 
   return (
-    <List.Item className='pendingIssue'>
+    <List.Item className="pendingIssue">
       <Row type="flex" align="middle" justify="space-between" style={{width: '100%'}}>
         <Col>
-          <span className='issueName'>{props.item.name}</span>
+          <span className="issueName">{props.item.name}</span>
           <Button type={'primary'} onClick={handleStart}>Start</Button>
         </Col>
         <Col>
-          <Button icon={'close'} onClick={handleRemove} />
+          <Popconfirm title="Confrim Delete" onConfirm={handleRemove} okText="Delete" >
+            <a href="#">Delete</a>
+          </Popconfirm>
         </Col>
       </Row>
     </List.Item>
