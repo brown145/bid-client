@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Col, List, Row, Tag } from 'antd';
+import { Button, Col, List, message, Row, Tag } from 'antd';
 import { bids as bidService } from '../network/feathersSocket';
 
 const ButtonGroup = Button.Group;
@@ -15,6 +15,11 @@ function ActiveItem(props) {
     const { value } = event.target;
     setBid(value);
     bidService.create({ issueId: _id, value })
+      .catch((error) => {
+        console.log(error);
+        message.error(error.message);
+        setBid(error.data.bidValue);
+      });
   }
 
   const renderBidder = () => (
