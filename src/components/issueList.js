@@ -31,14 +31,14 @@ function reducerIssues(issues, action) {
   }
 }
 
-function IssueList(props) {
+function IssueList({ roomId }) {
   const [isLoading, setIsLoading] = useState(false);
   const [issues, issuesDispatch] = useReducer(reducerIssues, []);
 
   useEffect(() => {
-    if (props.authenticated) {
+    if (roomId) {
       setIsLoading(true);
-      issueService.all()
+      issueService.byRoom({ roomId })
         .then(issues => {
           setIsLoading(false);
           issuesDispatch({ type: 'set', payload: issues.data })
@@ -46,7 +46,7 @@ function IssueList(props) {
     } else {
       issuesDispatch({ type: 'set', payload: [] });
     }
-  }, [props.authenticated]);
+  }, [roomId]);
 
   useEffect(() => {
     issueService.on.create(issue => {
@@ -97,7 +97,7 @@ function IssueList(props) {
       />
       <Divider className='listEnd' />
       <IssueAdder
-        enabled={!isLoading && props.authenticated}
+        enabled={!isLoading && roomId}
         onAdd={handleAddIssue}
       />
     </Fragment>

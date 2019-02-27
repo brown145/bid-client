@@ -4,15 +4,15 @@ import { Avatar, Col, List, Row } from 'antd';
 import { users as userService } from '../network/feathersSocket';
 import './userList.css';
 
-function UserList(props) {
+function UserList({ currentUserId, displayNames, roomId }) {
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState([]);
 
   useEffect(
     () => {
-      if (props.authenticated) {
+      if (roomId) {
         setIsLoading(true);
-        userService.all()
+        userService.byRoom({ roomId })
           .then(users => {
             setIsLoading(false);
             setUsers(users.data);
@@ -21,10 +21,12 @@ function UserList(props) {
         setUsers([]);
       }
     },
-    [props.authenticated]
+    [roomId]
   );
 
-  const renderDisplayName = (item) => (props.displayNames) ?
+  // TODO listen for new users added/removed
+
+  const renderDisplayName = (item) => (displayNames) ?
     item.displayName : '';
 
   return (
@@ -36,7 +38,7 @@ function UserList(props) {
       renderItem={item => (
         <List.Item>
           <Row
-            className={(item._id === props.currentUser._id) ? 'currentUser' : ''}
+            className={(item._id === currentUserId) ? 'currentUser' : ''}
             type="flex"
             align="middle"
             justify="space-between"

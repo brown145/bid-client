@@ -1,7 +1,9 @@
 # TODO
 
 1. aws
-1. channels
+1. channels - finish cleanup/TODOs
+1. unregister / cleanup events
+1. api scheme -> https://docs.feathersjs.com/guides/advanced/using-a-view-engine.html
 
 
 # Build and Deploy

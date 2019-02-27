@@ -15,11 +15,32 @@ export const login = client.authenticate;
 export const logout = client.logout;
 
 const userService = client.service('users');
+const roomService = client.service('rooms');
 const issueService = client.service('issues');
 const bidService = client.service('bids');
 
+export const users = {
+  all: () => userService.find(),
+  byRoom: ({ roomId }) => userService.find({ query: { roomId }}),
+  joinRoom: ({ user, roomId }) => {
+    return userService.patch('currentUser', { roomId })
+  },
+  on: {
+    create: (handler) => userService.on('created', handler)
+  }
+}
+
+export const rooms = {
+  byName: ({ name }) => roomService.find({ query: { name }}),
+  create: ({ name }) => roomService.create({ name }),
+  on: {
+    create: (handler) => roomService.on('created', handler)
+  }
+}
+
 export const issues = {
   all: () => issueService.find(),
+  byRoom: ({ roomId }) => issueService.find({ query: { roomId }}),
   create: ({ name }) => issueService.create({ name }),
   update: ({ id, status }) => issueService.patch(id, { status }),
   remove: ({ id }) => issueService.remove(id),
@@ -27,13 +48,6 @@ export const issues = {
     create: (handler) => issueService.on('created', handler),
     update: (handler) => issueService.on('patched', handler),
     remove: (handler) => issueService.on('removed', handler)
-  }
-}
-
-export const users = {
-  all: () => userService.find(),
-  on: {
-    create: (handler) => userService.on('created', handler)
   }
 }
 
@@ -51,5 +65,6 @@ export default {
   issues,
   login,
   logout,
+  rooms,
   users
 }
