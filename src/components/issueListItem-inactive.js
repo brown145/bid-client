@@ -20,9 +20,13 @@ function InactiveItem({ item }) {
   useEffect(() => {
     bidService.byIssue({ issueId: item._id })
       .then(bids => bidsDispatch({ type: 'set', payload: bids.data }));
-    // TODO: would need to be a channel -> do we really need?
-    //  is only if we get a late bid that did not
+
+    // FUTURE: are some users not seeing all bids?
+    //   would need to be a channel -> do we really need?
+    //   is only if we get a late bid that did not
     // bidService.on.create(issue => bidsDispatch({ type: 'add', payload: issue }));
+    // -----
+    
   }, []);
 
   const bidMean = meanBy(bids, 'value');

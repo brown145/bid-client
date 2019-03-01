@@ -10,7 +10,9 @@ import UserList from './components/userList';
 import IssueList from './components/issueList';
 import Foot from './components/foot';
 import bidServer from './utility/bidServer';
+import isNarrow from './utility/isNarrow';
 import './App.css';
+
 
 const { Header, Sider, Footer, Content } = Layout;
 
@@ -23,10 +25,9 @@ notification.config({
   bottom: 50
 });
 
-// TODO: collapsed state if mobile
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(false);
-  const [isSideClosed, setSideClosed] = useState(false);
+  const [isSideClosed, setSideClosed] = useState(isNarrow());
   const [user, setUser] = useState({});
   const [room, setRoom] = useState({});
 
@@ -66,31 +67,33 @@ function App() {
       });
   };
 
-  // TODO: revisit logic here
   const handleRoomAssignment = () => {
     let roomName = window.location.pathname.slice(1);
 
-    const onSuccess = (room) => {
+    const joinRoom = (room) =>
       userService.joinRoom({ user, roomId: room._id })
         .then(() => setRoom(room))
-        .catch((...rest) => console.warn('TODO: catch', rest));
+        .catch(() => message.error('Unable to join room.'));
 
-      // TODO: messageing
-      notification.open({
-          message: room.name,
-          description: `Do you want to invite people to room; just use the url silly! ${window.location.href}`
-        });
-    }
+    const makeRoom = () =>
+      roomService.create({ name: roomName })
+        .then(joinRoom)
+        .catch(() => message.error('Unable to create room.'));
+
+      // FUTURE: messageing
+      // notification.open({
+      //   message: room.name,
+      //   description: `Do you want to invite people to room; just use the url silly! ${window.location.href}`
+      // });
 
     if (roomName) {
       roomService.byName({ name: roomName })
-        .then(({ data }) => onSuccess(data[0]))
-        .catch((...rest) => console.warn('TODO: catch', rest));
+        .then(({ data }) => joinRoom(data[0]))
+        .catch(() => makeRoom());
     } else {
       roomName = randomWords({min:2, max:5, join:'-'});
       window.history.pushState({}, 'Planning Poker', roomName);
-      roomService.create({ name: roomName })
-        .then(onSuccess);
+      makeRoom()
     }
   };
 

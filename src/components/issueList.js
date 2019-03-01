@@ -49,19 +49,26 @@ function IssueList({ roomId }) {
   }, [roomId]);
 
   useEffect(() => {
-    issueService.on.create(issue => {
+    const offCreate = issueService.on.create(issue => {
       message.info(`Added issue: "${issue.name.slice(0, 24)}"`);
       issuesDispatch({ type: 'add', payload: issue });
     });
-    issueService.on.update((issue) => {
+
+    const offUpdate = issueService.on.update(issue => {
       message.info(`Issue "${issue.name.slice(0, 24)}" is ${issue.status}`);
       issuesDispatch({ type: 'update', payload: issue });
     });
-    issueService.on.remove((issue) => {
+
+    const offRemove = issueService.on.remove(issue => {
       message.warning(`Removed issue: "${issue.name.slice(0, 24)}"`);
       issuesDispatch({ type: 'remove', payload: issue._id });
     });
-    return () => console.log('TODO - did we unmount?');
+
+    return () => {
+      offCreate();
+      offUpdate();
+      offRemove();
+    };
   }, []);
 
   const handleAddIssue = (issueData) =>

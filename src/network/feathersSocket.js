@@ -26,16 +26,20 @@ export const users = {
     return userService.patch('currentUser', { roomId })
   },
   on: {
-    create: (handler) => userService.on('created', handler)
+    join: (handler) => {
+      userService.on('join', handler);
+      return () => userService.removeListener('join', handler);
+    },
+    leave: (handler) => {
+      userService.on('leave', handler);
+      return () => userService.removeListener('leave', handler);
+    }
   }
 }
 
 export const rooms = {
   byName: ({ name }) => roomService.find({ query: { name }}),
-  create: ({ name }) => roomService.create({ name }),
-  on: {
-    create: (handler) => roomService.on('created', handler)
-  }
+  create: ({ name }) => roomService.create({ name })
 }
 
 export const issues = {
@@ -45,9 +49,18 @@ export const issues = {
   update: ({ id, status }) => issueService.patch(id, { status }),
   remove: ({ id }) => issueService.remove(id),
   on: {
-    create: (handler) => issueService.on('created', handler),
-    update: (handler) => issueService.on('patched', handler),
-    remove: (handler) => issueService.on('removed', handler)
+    create: (handler) => {
+      issueService.on('created', handler);
+      return () => issueService.removeListener('created', handler);
+    },
+    update: (handler) => {
+      issueService.on('patched', handler);
+      return () => issueService.removeListener('patched', handler);
+    },
+    remove: (handler) => {
+      issueService.on('removed', handler);
+      return () => issueService.removeListener('removed', handler);
+    }
   }
 }
 

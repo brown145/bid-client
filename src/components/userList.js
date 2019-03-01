@@ -1,12 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Avatar, Col, List, Row } from 'antd';
 
 import { users as userService } from '../network/feathersSocket';
 import './userList.css';
 
+function reducerUsers(users, action) {
+  switch (action.type) {
+    case 'set':
+      return action.payload;
+    case 'add':
+      return [...users, action.payload];
+    case 'remove':
+      return users.filter(i => i._id !== action.payload);
+    default:
+      return users;
+  }
+}
+
 function UserList({ currentUserId, displayNames, roomId }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [users, usersDispatch] = useReducer(reducerUsers, []);
 
   useEffect(
     () => {
@@ -15,21 +28,34 @@ function UserList({ currentUserId, displayNames, roomId }) {
         userService.byRoom({ roomId })
           .then(users => {
             setIsLoading(false);
-            setUsers(users.data);
+            usersDispatch({ type: 'set', payload: users.data });
           });
       } else {
-        setUsers([]);
+        usersDispatch({ type: 'set', payload: [] });
       }
     },
     [roomId]
   );
 
-  // TODO listen for new users added/removed
+  useEffect(() => {
+    const offJoin = userService.on.join(user => {
+      usersDispatch({ type: 'add', payload: user });
+    });
+
+    const offLeave = userService.on.leave(user => {
+      usersDispatch({ type: 'remove', payload: user });
+    });
+
+    return () => {
+      offJoin();
+      offLeave();
+    };
+  }, []);
 
   const renderDisplayName = (item) => (displayNames) ?
     item.displayName : '';
 
-  return (
+  return (users.length) ? (
     <List
       className='userList'
       dataSource={users}
@@ -54,7 +80,7 @@ function UserList({ currentUserId, displayNames, roomId }) {
         </List.Item>
       )}
     />
-  );
+  ): null;
 }
 
 export default UserList;
