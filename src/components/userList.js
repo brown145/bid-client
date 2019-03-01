@@ -38,17 +38,17 @@ function UserList({ currentUserId, displayNames, roomId }) {
   );
 
   useEffect(() => {
-    const offJoin = userService.on.join(user => {
-      usersDispatch({ type: 'add', payload: user });
-    });
+    const offCreate = userService.on.create(user =>
+      usersDispatch({ type: 'add', payload: user })
+    );
 
-    const offLeave = userService.on.leave(user => {
-      usersDispatch({ type: 'remove', payload: user });
-    });
+    const offUpdate = userService.on.update(user =>
+      usersDispatch({ type: 'add', payload: user })
+    );
 
     return () => {
-      offJoin();
-      offLeave();
+      offCreate();
+      offUpdate();
     };
   }, []);
 
