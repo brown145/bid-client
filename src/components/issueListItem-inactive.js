@@ -14,14 +14,15 @@ function reducerBids(bids, action) {
   }
 }
 
-function InactiveItem(props) {
+function InactiveItem({ item }) {
   const [bids, bidsDispatch] = useReducer(reducerBids, []);
 
   useEffect(() => {
-    bidService.byIssue({ issueId: props.item._id })
+    bidService.byIssue({ issueId: item._id })
       .then(bids => bidsDispatch({ type: 'set', payload: bids.data }));
-    // TODO: needs to be by Id
-    // bidService.on.create(issue => bidsDispatch({ type: 'add', payload: issue }))
+    // TODO: would need to be a channel -> do we really need?
+    //  is only if we get a late bid that did not
+    // bidService.on.create(issue => bidsDispatch({ type: 'add', payload: issue }));
   }, []);
 
   const bidMean = meanBy(bids, 'value');
@@ -65,7 +66,7 @@ function InactiveItem(props) {
     <List.Item className='InactiveIssue'>
       <Row type="flex" align="middle" justify="space-between" style={{width: '100%'}}>
         <Col>
-          <span className='issueName'>{props.item.name}</span>
+          <span className='issueName'>{item.name}</span>
           {renderBidSums()}
         </Col>
         <Col>

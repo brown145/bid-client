@@ -56,7 +56,7 @@ export const bids = {
   byIssue: ({ issueId }) => bidService.find({ query: { issueId } }),
   create: ({ issueId, value }) => bidService.create({ issueId, value }),
   on: {
-    create: (handler) => bidService.on('created', handler)
+    createForIssue: ({ handler, issueId }) => bidService.on('created', handler, { query: { issueId }})
   }
 }
 

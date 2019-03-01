@@ -5,7 +5,7 @@ import './head.css';
 
 import Login from '../components/login';
 
-function Head(props) {
+function Head({ authenticated, onAuthenticate, onDeauthenticate }) {
   return (
     <Row className='head' type="flex" align="middle" justify="space-between">
       <Col>
@@ -20,9 +20,9 @@ function Head(props) {
       </Col>
       <Col>
         <Login
-          authenticated={props.authenticated}
-          onAuthenticate={props.onAuthenticate}
-          onDeauthenticate={props.onDeauthenticate}
+          authenticated={authenticated}
+          onAuthenticate={onAuthenticate}
+          onDeauthenticate={onDeauthenticate}
         />
       </Col>
     </Row>

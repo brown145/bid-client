@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { message, notification, Layout } from 'antd';
 import randomWords from 'random-words';
 
@@ -24,26 +24,28 @@ notification.config({
 });
 
 // TODO: collapsed state if mobile
-// TODO: prevent collablesed state if no data or change no data text
-// TODO: make functional Component; useState and useEffect
-class App extends Component {
-  state = {
-    authenticated: false,
-    collapseSide: false,
-    user: {},
-    room: {}
-  };
+function App() {
+  const [isAuthenticated, setAuthenticated] = useState(false);
+  const [isSideClosed, setSideClosed] = useState(false);
+  const [user, setUser] = useState({});
+  const [room, setRoom] = useState({});
 
-  doAuth = (attemptRedirect) => {
+  useEffect(() => {
+    doAuth(false);
+  }, []);
+
+  const doAuth = (attemptRedirect) => {
     const hideLoginMessage = message.loading('Authenticating', 0);
     login()
       .then(({ user }) => {
         message.success(`Authenticated as ${user.displayName}`);
-        this.setState({ authenticated: true, user });
+        setAuthenticated(true);
+        setUser(user);
       })
-      .then(this.handleRoomAssignment)
+      .then(handleRoomAssignment)
       .catch(() => {
-        this.setState({ authenticated: false, user: null })
+        setAuthenticated(false);
+        setUser(null);
         if (attemptRedirect) {
           window.location.href = `${bidServer.uri}/auth/google`;
         }
@@ -51,29 +53,26 @@ class App extends Component {
       .finally(hideLoginMessage);
   }
 
-  componentDidMount() {
-    this.doAuth(false);
-  }
+  const handleAuthenticate = () => {
+    doAuth(true);
+  };
 
-  handleAuthenticate = () => {
-    this.doAuth(true);
-  }
-
-  handleDeauthenticate = () => {
+  const handleDeauthenticate = () => {
     logout()
       .then(() => {
         message.success('Logged out');
-        this.setState({ authenticated: false, user: {} });
+        setAuthenticated(false);
+        setUser({});
       });
-  }
+  };
 
   // TODO: revisit logic here
-  handleRoomAssignment = () => {
+  const handleRoomAssignment = () => {
     let roomName = window.location.pathname.slice(1);
 
     const onSuccess = (room) => {
-      userService.joinRoom({ user: this.state.user, roomId: room._id })
-        .then(() => this.setState({ room }))
+      userService.joinRoom({ user, roomId: room._id })
+        .then(() => setRoom(room))
         .catch((...rest) => console.warn('TODO: catch', rest));
 
       // TODO: messageing
@@ -93,44 +92,43 @@ class App extends Component {
       roomService.create({ name: roomName })
         .then(onSuccess);
     }
-  }
+  };
 
-  render() {
-    const roomId = (this.state.room) ? this.state.room._id : null;
-    return (
-      <Layout className="app">
-        <Header>
-          <Head
-            authenticated={this.state.authenticated}
-            onAuthenticate={this.handleAuthenticate}
-            onDeauthenticate={this.handleDeauthenticate}
+  const roomId = (room) ? room._id : null;
+
+  return (
+    <Layout className="app">
+      <Header>
+        <Head
+          authenticated={isAuthenticated}
+          onAuthenticate={handleAuthenticate}
+          onDeauthenticate={handleDeauthenticate}
+        />
+      </Header>
+      <Layout>
+        <Sider
+          theme={'light'}
+          collapsible
+          collapsed={isSideClosed}
+          onCollapse={() => setSideClosed((isClosed) => !isClosed)}
+          width={160}
+          collapsedWidth={40}
+        >
+          <UserList
+            currentUserId={(user) ? user._id : null}
+            displayNames={!isSideClosed}
+            roomId={roomId}
           />
-        </Header>
-        <Layout>
-          <Sider
-            theme={'light'}
-            collapsible
-            collapsed={this.state.collapseSide}
-            onCollapse={() => this.setState({ collapseSide: !this.state.collapseSide })}
-            width={160}
-            collapsedWidth={40}
-          >
-            <UserList
-              currentUserId={(this.state.user) ? this.state.user._id : null}
-              displayNames={!this.state.collapseSide} // TODO: rename this prop
-              roomId={roomId}
-            />
-          </Sider>
-          <Content>
-            <IssueList roomId={roomId} />
-          </Content>
-        </Layout>
-        <Footer>
-          <Foot />
-        </Footer>
+        </Sider>
+        <Content>
+          <IssueList roomId={roomId} />
+        </Content>
       </Layout>
-    );
-  }
+      <Footer>
+        <Foot />
+      </Footer>
+    </Layout>
+  );
 }
 
 export default App;

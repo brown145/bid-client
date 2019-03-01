@@ -5,7 +5,7 @@ import './issueAdder.css';
 // ant assumes a input + submit button is a search
 const SubmitableInput = Input.Search;
 
-function IssueAdder(props) {
+function IssueAdder({ enabled, onAdd }) {
   const [issueName, setIssueName] = useState('');
 
   const clear = () => {
@@ -17,7 +17,7 @@ function IssueAdder(props) {
   }
   const handleAdd = (name) => {
     if (name) {
-      props.onAdd({ name });
+      onAdd({ name });
     }
     clear();
   }
@@ -26,7 +26,7 @@ function IssueAdder(props) {
     <SubmitableInput
       autoFocus
       className='issueAdder'
-      disabled={!props.enabled}
+      disabled={!enabled}
       enterButton='Add'
       onChange={handleChange}
       onSearch={handleAdd}

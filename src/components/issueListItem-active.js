@@ -4,14 +4,14 @@ import { bids as bidService } from '../network/feathersSocket';
 
 const ButtonGroup = Button.Group;
 
-function ActiveItem(props) {
+function ActiveItem({ item, onClose }) {
   const [bid, setBid] = useState(NaN);
   const handleClose = (event) => {
-    props.onClose(props.item._id);
+    onClose(item._id);
   }
 
   const handleBid = (event) => {
-    const { _id } = props.item;
+    const { _id } = item;
     const { value } = event.target;
     setBid(value);
     bidService.create({ issueId: _id, value })
@@ -42,7 +42,7 @@ function ActiveItem(props) {
     <List.Item>
       <Row type="flex" align="middle" justify="space-between" style={{width: '100%'}}>
         <Col>
-          <span className='issueName'>{props.item.name}</span>
+          <span className='issueName'>{item.name}</span>
           {(bid) ? renderBid() : renderBidder()}
         </Col>
         <Col>

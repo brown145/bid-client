@@ -1,20 +1,20 @@
 import React from 'react';
 import { Button, Col, List, Popconfirm, Row } from 'antd';
 
-function PendingItem(props) {
+function PendingItem({ item, onRemove, onStart }) {
   const handleRemove = (event) => {
-    props.onRemove(props.item._id);
+    onRemove(item._id);
   }
 
   const handleStart = (event) => {
-    props.onStart(props.item._id);
+    onStart(item._id);
   }
 
   return (
     <List.Item className="pendingIssue">
       <Row type="flex" align="middle" justify="space-between" style={{width: '100%'}}>
         <Col>
-          <span className="issueName">{props.item.name}</span>
+          <span className="issueName">{item.name}</span>
           <Button type={'primary'} onClick={handleStart}>Start</Button>
         </Col>
         <Col>
