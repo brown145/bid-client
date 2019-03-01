@@ -3,7 +3,6 @@ import { message, notification, Layout } from 'antd';
 import randomWords from 'random-words';
 
 import { rooms as roomService, users as userService } from './network/feathersSocket';
-
 import { login, logout } from './network/feathersSocket';
 import Head from './components/head';
 import UserList from './components/userList';
@@ -63,6 +62,7 @@ function App() {
       .then(() => {
         message.success('Logged out');
         setAuthenticated(false);
+        setRoom({})
         setUser({});
       });
   };

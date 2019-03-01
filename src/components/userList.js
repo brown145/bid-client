@@ -9,7 +9,7 @@ function reducerUsers(users, action) {
     case 'set':
       return action.payload;
     case 'add':
-      return [...users, action.payload];
+      return [...users.filter(i => i._id !== action.payload._id), action.payload];
     case 'remove':
       return users.filter(i => i._id !== action.payload);
     default:
@@ -38,16 +38,11 @@ function UserList({ currentUserId, displayNames, roomId }) {
   );
 
   useEffect(() => {
-    const offCreate = userService.on.create(user =>
-      usersDispatch({ type: 'add', payload: user })
-    );
-
     const offUpdate = userService.on.update(user =>
       usersDispatch({ type: 'add', payload: user })
     );
 
     return () => {
-      offCreate();
       offUpdate();
     };
   }, []);
@@ -58,7 +53,7 @@ function UserList({ currentUserId, displayNames, roomId }) {
   return (users.length) ? (
     <List
       className='userList'
-      dataSource={users}
+      dataSource={users.sort((a, b) => a.displayName > b.displayName)}
       itemLayout="horizontal"
       loading={isLoading}
       renderItem={item => (
