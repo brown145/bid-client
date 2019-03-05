@@ -9,9 +9,9 @@ function reducerUsers(users, action) {
     case 'set':
       return action.payload;
     case 'add':
-      return [...users.filter(i => i._id !== action.payload._id), action.payload];
+      return [...users.filter(usr => usr._id !== action.payload._id), action.payload];
     case 'remove':
-      return users.filter(i => i._id !== action.payload);
+      return users.filter(usr => usr._id !== action.payload._id);
     default:
       return users;
   }
@@ -37,15 +37,30 @@ function UserList({ currentUserId, displayNames, roomId }) {
     [roomId]
   );
 
-  useEffect(() => {
-    const offUpdate = userService.on.update(user =>
-      usersDispatch({ type: 'add', payload: user })
-    );
+  useEffect(
+    () => {
+      const offUpdate = userService.on.update(user => {
+        usersDispatch({ type: 'add', payload: user });
+      });
+      const offRemove = userService.on.remove(user => {
+        usersDispatch({ type: 'remove', payload: user });
+      });
+      const offLeave = userService.on.leaveRoom(({ user }) => {
+        usersDispatch({ type: 'remove', payload: user });
+      });
+      const offJoin = userService.on.joinRoom(({ user }) => {
+        usersDispatch({ type: 'add', payload: user });
+      });
 
-    return () => {
-      offUpdate();
-    };
-  }, []);
+      return () => {
+        offUpdate();
+        offRemove();
+        offLeave();
+        offJoin();
+      };
+    },
+    []
+  );
 
   const renderDisplayName = (item) => (displayNames) ?
     item.displayName : '';

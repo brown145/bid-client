@@ -26,13 +26,21 @@ export const users = {
     return userService.patch('currentUser', { roomId })
   },
   on: {
-    create: (handler) => {
-      userService.on('createD', handler);
-      return () => userService.removeListener('createD', handler);
+    remove: (handler) => {
+      userService.on('removed', handler);
+      return () => userService.removeListener('removed', handler);
     },
     update: (handler) => {
       userService.on('patched', handler);
       return () => userService.removeListener('patched', handler);
+    },
+    leaveRoom: (handler) => {
+      userService.on('leaveRoom', handler);
+      return () => userService.removeListener('leaveRoom', handler);
+    },
+    joinRoom: (handler) => {
+      userService.on('joinRoom', handler);
+      return () => userService.removeListener('joinRoom', handler);
     }
   }
 }
